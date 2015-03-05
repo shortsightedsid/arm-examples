@@ -1,0 +1,22 @@
+project (arm-examples)
+
+cmake_minimum_required (VERSION 2.8)
+set (TIVAWARE_HOME "~/projects/TivaWare")
+set (common_SOURCES "${CMAKE_SOURCE_DIR}/common/startup.c")
+set (LINKER_SCRIPT "${CMAKE_SOURCE_DIR}/common/arm-examples.ld")
+include_directories (${TIVAWARE_HOME})
+
+message(STATUS "---------------------------------------------")
+message(STATUS " ")
+message(STATUS " ")
+message(STATUS "Info: Using the following variables")
+message(STATUS "Info: Ensure that they match your environment")
+message(STATUS " ")
+message(STATUS "Info: TIVAWARE_HOME:         " ${TIVAWARE_HOME})
+message(STATUS "Info: TOOLCHAIN_INSTALL_DIR: " ${TOOLCHAIN_INSTALL_DIR})
+message(STATUS "Info: CROSS_COMPILE:         " ${CROSS_COMPILE})
+message(STATUS " ")
+message(STATUS " ")
+message(STATUS "---------------------------------------------")
+
+add_subdirectory (morse)
