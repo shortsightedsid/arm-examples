@@ -9,7 +9,7 @@ const uint32_t MORSE_UNIT = 100000;
 class Morse
 {
 	public:
-	Morse();
+	Morse(uint32_t ledBaseAddress);
 	~Morse();
 	void blinkMessage(const char *message);
 	void space();

@@ -1,28 +1,27 @@
-#include "Led.hpp"
-#include "inc/tm4c1294ncpdt.h"
 #include <stdint.h>
+#include "inc/hw_types.h"
+#include "inc/hw_gpio.h"
+
+#include "Led.hpp"
 
 //
 // Enable the GPIO port that is used for the on-board LED.
-// Do a dummy read to insert a few cycles after enabling the peripheral.
 // Enable the GPIO pin for the LED (PN0).  
 // Set the direction as output, and
 // enable the GPIO pin for digital function.
 //
-Led::Led()
+Led::Led(uint32_t baseAddress)
 {
-    volatile uint32_t dummy;
+    HWREG((baseAddress + GPIO_O_DIR)) |= (0x01u);
+    HWREG((baseAddress + GPIO_O_DEN)) |= (0x01u);
 
-    SYSCTL_RCGCGPIO_R = SYSCTL_RCGCGPIO_R12;
-
-    dummy = SYSCTL_RCGCGPIO_R;
-
-    GPIO_PORTN_DIR_R = 0x01;
-    GPIO_PORTN_DEN_R = 0x01;
+    this->baseAddress = baseAddress;
 }
 
 Led::~Led()
 {
+    HWREG((baseAddress + GPIO_O_DEN)) &= ~(0x01u);
+    HWREG((baseAddress + GPIO_O_DIR)) &= ~(0x01u);
 }
 
 //
@@ -31,7 +30,7 @@ Led::~Led()
 //
 void Led::on(uint32_t time)
 {
-        GPIO_PORTN_DATA_R |= 0x01;
+        HWREG((baseAddress + GPIO_O_DATA + 0x4u)) |= (0x01u);
 
         for(volatile uint32_t i(0); i < time; i++) {}
 }
@@ -42,7 +41,7 @@ void Led::on(uint32_t time)
 //
 void Led::off(uint32_t time)
 {
-        GPIO_PORTN_DATA_R &= ~(0x01);
+        HWREG((baseAddress + GPIO_O_DATA + 0x4u)) &= ~(0x01u);
 
         for(volatile uint32_t i(0); i < time; i++) {}
 }
