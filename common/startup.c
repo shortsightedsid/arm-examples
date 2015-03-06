@@ -48,7 +48,8 @@ extern int main(void);
 // Reserve space for the system stack.
 //
 //*****************************************************************************
-static uint32_t pui32Stack[64];
+#define STACK_SIZE 64
+static uint32_t pui32Stack[STACK_SIZE];
 
 //*****************************************************************************
 //
