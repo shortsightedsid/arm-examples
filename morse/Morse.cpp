@@ -1,7 +1,7 @@
 #include "Morse.hpp"
 
-Morse::Morse(uint32_t ledBaseAddress)
-	: l(ledBaseAddress)
+Morse::Morse(uint32_t ledBaseAddress, uint8_t ledPin)
+	: l(ledBaseAddress, ledPin)
 {
 }
 

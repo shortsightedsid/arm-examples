@@ -10,18 +10,21 @@
 // Set the direction as output, and
 // enable the GPIO pin for digital function.
 //
-Led::Led(uint32_t baseAddress)
+Led::Led(uint32_t baseAddress, uint8_t pin)
 {
-    HWREG((baseAddress + GPIO_O_DIR)) |= (0x01u);
-    HWREG((baseAddress + GPIO_O_DEN)) |= (0x01u);
+	pin++; // Store Pins 0 to 7 as 1 to 8.
+
+    HWREG((baseAddress + GPIO_O_DIR)) |= pin;
+    HWREG((baseAddress + GPIO_O_DEN)) |= pin;
 
     this->baseAddress = baseAddress;
+    this->pin = pin;
 }
 
 Led::~Led()
 {
-    HWREG((baseAddress + GPIO_O_DEN)) &= ~(0x01u);
-    HWREG((baseAddress + GPIO_O_DIR)) &= ~(0x01u);
+    HWREG((baseAddress + GPIO_O_DEN)) &= ~pin;
+    HWREG((baseAddress + GPIO_O_DIR)) &= ~pin;
 }
 
 //
@@ -30,7 +33,7 @@ Led::~Led()
 //
 void Led::on(uint32_t time)
 {
-        HWREG((baseAddress + GPIO_O_DATA + 0x4u)) |= (0x01u);
+        HWREG((baseAddress + GPIO_O_DATA + (pin << 0x2))) |= (0xFFu);
 
         for(volatile uint32_t i(0); i < time; i++) {}
 }
@@ -41,7 +44,7 @@ void Led::on(uint32_t time)
 //
 void Led::off(uint32_t time)
 {
-        HWREG((baseAddress + GPIO_O_DATA + 0x4u)) &= ~(0x01u);
+        HWREG((baseAddress + GPIO_O_DATA + (pin << 0x2))) &= ~(0xFFu);
 
         for(volatile uint32_t i(0); i < time; i++) {}
 }
