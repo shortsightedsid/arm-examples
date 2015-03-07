@@ -26,4 +26,4 @@ message(STATUS " ")
 message(STATUS "---------------------------------------------")
 
 add_subdirectory (drivers)
-add_subdirectory (morse)
+add_subdirectory (apps)
